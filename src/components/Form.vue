@@ -1,26 +1,88 @@
 <template>
   <ElCard>
-    <ElForm :model="formData">
+    <ElForm
+      :model="formData"
+      ref="addItemForm"
+      :rules="rules"
+      lable-position="top"
+    >
       <ElFormItem label="Type" prop="type">
-        <ElSelect>
-          <ElOption></ElOption>
+        <ElSelect
+          class="type-select"
+          v-model="formdata.type"
+          placeholder="Choose type..."
+        >
+          <ElOption label="Income" value="INCOME" />
+          <ElOption label="Outcome" value="OUTCOME" />
         </ElSelect>
       </ElFormItem>
+
+      <ElFormItem lable="Comments" props="comment">
+        <ElInput v-model="formData.comment" />
+      </ElFormItem>
+
+      <ElFormItem label="Value" prop="value">
+        <ElInput v-model.number="formData.value" />
+      </ElFormItem>
+
+      <ElButton @click="onSubmit" type="primary">Submit</ElButton>
     </ElForm>
   </ElCard>
 </template>
 
 <script>
 export default {
-  name: 'Form',
+  name: "Form",
   data: () => ({
     formData: {
-      type: 'INCOME',
-      comment: '',
+      type: "INCOME",
+      comment: "",
       value: 0,
     },
+    rules: {
+      type: [
+        {
+          requred: true,
+          message: "Please select type",
+          trigger: "blur",
+        },
+      ],
+      comment: [
+        {
+          requred: true,
+          message: "Please input comment",
+          trigger: "change",
+        },
+      ],
+      value: [
+        {
+          requred: true,
+          message: "Please input value",
+          trigger: "change",
+        },
+        {
+          type: "number",
+          message: "Value must be a number",
+          trigger: "change",
+        },
+      ],
+    },
   }),
+  methods: {
+    onSubmit() {
+      this.$refs.addItemForm.validate((valid) => {
+        if (valid) {
+          this.$emit("submitForm", { ...this.formData });
+          this.$refs.addItemForm.resetFields();
+        }
+      });
+    },
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.type-select {
+  width: 100%;
+}
+</style>
