@@ -1,5 +1,5 @@
 <template>
-  <ElCard>
+  <ElCard class="form-card">
     <ElForm
       :model="formData"
       ref="addItemForm"
@@ -9,7 +9,7 @@
       <ElFormItem label="Type" prop="type">
         <ElSelect
           class="type-select"
-          v-model="formdata.type"
+          v-model="formData.type"
           placeholder="Choose type..."
         >
           <ElOption label="Income" value="INCOME" />
@@ -17,7 +17,7 @@
         </ElSelect>
       </ElFormItem>
 
-      <ElFormItem lable="Comments" props="comment">
+      <ElFormItem label="Comments" prop="comment">
         <ElInput v-model="formData.comment" />
       </ElFormItem>
 
@@ -32,38 +32,38 @@
 
 <script>
 export default {
-  name: "Form",
+  name: 'Form',
   data: () => ({
     formData: {
-      type: "INCOME",
-      comment: "",
+      type: 'INCOME',
+      comment: '',
       value: 0,
     },
     rules: {
       type: [
         {
-          requred: true,
-          message: "Please select type",
-          trigger: "blur",
+          required: true,
+          message: 'Please select type',
+          trigger: 'blur',
         },
       ],
       comment: [
         {
-          requred: true,
-          message: "Please input comment",
-          trigger: "change",
+          required: true,
+          message: 'Please input comment',
+          trigger: 'change',
         },
       ],
       value: [
         {
-          requred: true,
-          message: "Please input value",
-          trigger: "change",
+          required: true,
+          message: 'Please input value',
+          trigger: 'change',
         },
         {
-          type: "number",
-          message: "Value must be a number",
-          trigger: "change",
+          type: 'number',
+          message: 'Value must be a number',
+          trigger: 'change',
         },
       ],
     },
@@ -71,8 +71,9 @@ export default {
   methods: {
     onSubmit() {
       this.$refs.addItemForm.validate((valid) => {
+        console.log(valid);
         if (valid) {
-          this.$emit("submitForm", { ...this.formData });
+          this.$emit('submitForm', { ...this.formData });
           this.$refs.addItemForm.resetFields();
         }
       });
@@ -82,6 +83,10 @@ export default {
 </script>
 
 <style scoped>
+.form-card {
+  max-width: 500px;
+  margin: auto;
+}
 .type-select {
   width: 100%;
 }
